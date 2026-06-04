@@ -1,0 +1,16 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="50" r="44" stroke="url(#gold-grad)" stroke-width="4"/>
+  <path d="M50 22L62 42H38L50 22Z" fill="url(#gold-grad)"/>
+  <path d="M50 78L38 58H62L50 78Z" fill="url(#gold-grad)"/>
+  <circle cx="50" cy="50" r="10" fill="url(#emerald-grad)"/>
+  <defs>
+    <linearGradient id="gold-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#f3e5ab" />
+    </linearGradient>
+    <linearGradient id="emerald-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+</svg>

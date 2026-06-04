@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FareShare - Experience a premium and precise bill splitting utility. Split bills, calculate tips, and save history seamlessly.">
+  <title>FareShare — Premium Bill & Tip Calculator</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Google Fonts: Outfit (Geometric Modern) & Playfair Display (Serif Luxury) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="decor-glow decor-glow-1"></div>
+  <div class="decor-glow decor-glow-2"></div>
+
+  <main class="app-container">
+    <button type="button" class="btn-theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle Theme">
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="44" stroke="url(#gold-grad)" stroke-width="2"/>
+          <path d="M50 20L63 43H37L50 20Z" fill="url(#gold-grad)"/>
+          <path d="M50 80L37 57H63L50 80Z" fill="url(#gold-grad)"/>
+          <circle cx="50" cy="50" r="8" fill="url(#emerald-grad)"/>
+          <defs>
+            <linearGradient id="gold-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#d4af37" />
+              <stop offset="100%" stop-color="#f3e5ab" />
+            </linearGradient>
+            <linearGradient id="emerald-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#10b981" />
+              <stop offset="100%" stop-color="#059669" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1 class="hotel-title">FareShare</h1>
+      <p class="hotel-subtitle">Split Calculator</p>
+    </header>
+
+    <div class="calculator-grid">
+      <!-- Left Panel: Inputs -->
+      <section class="card input-card">
+        <form id="calculator-form" novalidate>
+          
+          <!-- Bill Section -->
+          <div class="form-group" id="group-bill">
+            <label for="input-bill" class="input-label">Total Bill Amount</label>
+            <div class="input-wrapper currency-input">
+              <span class="input-prefix" aria-hidden="true">$</span>
+              <input 
+                type="text" 
+                id="input-bill" 
+                name="bill" 
+                inputmode="decimal" 
+                placeholder="0.00" 
+                required 
+                autocomplete="off"
+                aria-describedby="error-bill"
+              >
+            </div>
+            <span class="error-msg" id="error-bill" role="alert">Please enter a valid bill amount.</span>
+          </div>
+
+          <!-- Tip Section -->
+          <div class="form-group" id="group-tip">
+            <label class="input-label">Select Tip Percentage</label>
+            <div class="tip-presets" role="radiogroup" aria-label="Tip Percentage Presets">
+              <button type="button" class="btn-preset active" data-tip="10" role="radio" aria-checked="true">10%</button>
+              <button type="button" class="btn-preset" data-tip="12" role="radio" aria-checked="false">12%</button>
+              <button type="button" class="btn-preset" data-tip="15" role="radio" aria-checked="false">15%</button>
+              <button type="button" class="btn-preset" data-tip="20" role="radio" aria-checked="false">20%</button>
+              <button type="button" class="btn-preset" data-tip="custom" role="radio" aria-checked="false">Custom</button>
+            </div>
+
+            <!-- Custom Tip Slider Container -->
+            <div class="custom-tip-container hidden" id="custom-tip-box">
+              <div class="slider-header">
+                <span class="slider-title">Custom Percentage</span>
+                <span class="slider-value" id="slider-val-display">18%</span>
+              </div>
+              <div class="slider-wrapper">
+                <input 
+                  type="range" 
+                  id="input-tip-slider" 
+                  name="tipSlider" 
+                  min="0" 
+                  max="100" 
+                  value="18" 
+                  step="1"
+                  aria-label="Custom tip percentage slider"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Split Section -->
+          <div class="form-group" id="group-split">
+            <label for="input-people" class="input-label">Split Bill Between</label>
+            <div class="split-controls">
+              <button type="button" class="btn-counter" id="btn-decrement" aria-label="Decrease number of people" title="Decrease">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <input 
+                type="number" 
+                id="input-people" 
+                name="people" 
+                min="1" 
+                max="100" 
+                value="1" 
+                required 
+                inputmode="numeric" 
+                pattern="[0-9]*"
+                aria-describedby="error-people"
+              >
+              <button type="button" class="btn-counter" id="btn-increment" aria-label="Increase number of people" title="Increase">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+            <span class="people-suffix" id="people-suffix-txt">Person</span>
+            <span class="error-msg" id="error-people" role="alert">Please enter at least 1 person.</span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="btn-reset">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Reset
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-save" disabled>
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Split
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Right Panel: Outputs -->
+      <section class="card output-card" aria-live="polite">
+        <h2 class="sr-only">Results Breakdown</h2>
+        
+        <div class="results-container">
+          <!-- Main Output: Amount Per Person -->
+          <div class="result-highlight-block">
+            <div class="result-meta">
+              <span class="result-label-highlight">Each Person Pays</span>
+              <span class="result-subtext" id="split-text-desc">Including tip</span>
+            </div>
+            <div class="result-amount-highlight">
+              <span class="currency-symbol">$</span>
+              <span class="amount-value" id="val-split-share">0.00</span>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <!-- Secondary Outputs -->
+          <div class="result-row">
+            <div class="result-label-group">
+              <span class="result-label">Base Split</span>
+              <span class="result-subtext">Before tip, per person</span>
+            </div>
+            <div class="result-amount">
+              <span>$</span>
+              <span id="val-base-share">0.00</span>
+            </div>
+          </div>
+
+          <div class="result-row">
+            <div class="result-label-group">
+              <span class="result-label">Tip Share</span>
+              <span class="result-subtext">Tip amount, per person</span>
+            </div>
+            <div class="result-amount">
+              <span>$</span>
+              <span id="val-tip-share">0.00</span>
+            </div>
+          </div>
+
+          <div class="result-row total-row">
+            <div class="result-label-group">
+              <span class="result-label">Total Tip</span>
+              <span class="result-subtext">Cumulative tip amount</span>
+            </div>
+            <div class="result-amount accent-gold">
+              <span>$</span>
+              <span id="val-total-tip">0.00</span>
+            </div>
+          </div>
+
+          <div class="result-row total-row">
+            <div class="result-label-group">
+              <span class="result-label">Grand Total</span>
+              <span class="result-subtext">Total bill with tip</span>
+            </div>
+            <div class="result-amount accent-gold">
+              <span>$</span>
+              <span id="val-grand-total">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block" id="btn-share" disabled>
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v14"/></svg>
+          Share Summary
+        </button>
+      </section>
+    </div>
+
+    <!-- History Panel -->
+    <section class="card history-card" id="history-section">
+      <div class="history-header">
+        <h2 class="history-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Recent Splits
+        </h2>
+        <button type="button" class="btn-clear-history" id="btn-clear-history" title="Clear all history">Clear All</button>
+      </div>
+      
+      <div class="history-empty" id="history-empty-state">
+        <p>No recent calculations. Save a split to keep track of your payments.</p>
+      </div>
+      
+      <div class="history-list-wrapper">
+        <ul class="history-list" id="history-list">
+          <!-- Dynamically filled by JS -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- Toast Notification for Share / Copy alerts -->
+    <div class="toast-notification" id="toast" role="status" aria-live="polite">
+      Summary copied to clipboard
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 FareShare &bull; Split Calculator</p>
+  </footer>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
